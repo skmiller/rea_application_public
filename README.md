@@ -32,4 +32,6 @@ Steps:
 Once the Cloudformation is finished creating, take the newly created EC2 instance's IP address from the "Outputs" tab. Put it into the browser and it will give you the "Hello World" Sinatra response.
 
 ## Why I decided to use this route
-A cloudformation with a simple UserData script seemed the easiest route to me. I was able to specify the SecurityGroup to only allow port 80 access. No SSH access to the instance is allowed. There is also no IAM Instance Role assigned to the instance, so it has no way to access other AWS resources. It should be effectively orphaned and only able to return this "Hello World!" response. 
+A cloudformation with a simple UserData script seemed the easiest route to me. This cloudformation will allow the user to have everything they need to run the code with only two CLI commands. I was able to specify the SecurityGroup to only allow port 80 access. No SSH access to the instance is allowed. There is also no IAM Instance Role assigned to the instance, so it has no way to access other AWS resources. It should be effectively orphaned and only able to return this "Hello World!" response. 
+
+A shortcoming would perhaps be if the github repository with the Sinatra code went down, then there would be nothing to pull from.
