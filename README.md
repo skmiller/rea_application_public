@@ -20,9 +20,9 @@ Assumptions Made:
 
 Steps:
 - Navigate to this folder, or wherever you've stored the Cloudformation file and run this command to create the stack (any of these arguments can be changed as needed)
-    aws cloudformation create-stack --stack-name sinatra-simple-deployment --template-body file://sinatra_cloudformation.yaml --parameters ParameterKey=VPC,ParameterValue=vpc-7dd04705 --region us-west-2
+    ```aws cloudformation create-stack --stack-name sinatra-simple-deployment --template-body file://sinatra_cloudformation.yaml --parameters ParameterKey=VPC,ParameterValue=vpc-7dd04705 --region us-west-2```
 - Check on the stack status by running the command
-	aws cloudformation describe-stacks --stack-name sinatra-simple-deployment --region us-west-2
+	```aws cloudformation describe-stacks --stack-name sinatra-simple-deployment --region us-west-2```
 - If StackStatus is listed as "CREATE_COMPLETE", then retrieve the IP address from "Outputs"
 - Either enter in that IP address in the console, or perform a simple curl on it. Fin.
 
