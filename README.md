@@ -4,6 +4,7 @@ Application for Sean Miller to REA
 
 ## What's Needed
 - An AWS Account
+- Optional: AWS CLI access
 
 ## How to run
 ### Option 1
