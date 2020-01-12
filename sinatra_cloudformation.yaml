@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Cloudformation for launching Sinatra
+Parameters:
+  LatestAmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+  VPC:
+    Type: String
+    Default: 'vpc-7dd04705'
+    Description: Insert Default VPC For Account Here
+Resources:
+  HttpSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: Allows HTTP Access Only
+      GroupName: sinatra-http-access-sean-miller
+      VpcId: !Ref VPC
+      SecurityGroupEgress: 
+        - IpProtocol: -1
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+      SecurityGroupIngress: 
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+  SinatraServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      SecurityGroupIds:
+        - !GetAtt HttpSecurityGroup.GroupId
+      InstanceType: t2.micro
+      ImageId: !Ref LatestAmiId
+      UserData:
+        Fn::Base64: 
+          !Sub |
+            #!/bin/bash
+            yum update -y 
+            yum install gem -y
+            yum install git -y
+            cd /home/ec2-user/
+            git clone https://github.com/rea-cruitment/simple-sinatra-app.git
+            cd simple-sinatra-app
+            amazon-linux-extras install ruby2.6 -y
+            yum install ruby-devel -y
+            gem install bundler
+            /usr/local/bin/bundle install
+            /usr/local/bin/bundle exec rackup -p 80 --host 0.0.0.0
+Outputs:
+  SinatraEc2Instance:
+    Description: Ip Address of the EC2 Instance
+    Value: !GetAtt SinatraServer.PublicIp
